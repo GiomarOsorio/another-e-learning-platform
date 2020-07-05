@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile | Another E-learning Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-10"><h1><i class="fas fa-id-card pr-2"></i>Profile Panel</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+
+            <div class="text-center">
+                <img 
+                    src="{{ user.avatar.url }}"
+                    class="avatar img-circle rounded-circle border-0 w-100"
+                    alt="avatar"
+                    style="max-height: 300px; max-width: 300px;"
+                />
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <hr />
+                    <form class="form" id="registrationForm">
+                        <div class="col-12">
+                            <h3 class="mt-2"><i class="fas fa-user-circle pr-2"></i>Account info</h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="username"><h6>Username</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="username"><h6>{{ user.email }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-12">
+                            <h3 class="mt-2"><i class="fas fa-portrait pr-2"></i>Personal info</h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="first_name"><h6>First name</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="first_name"><h6>{{ user.first_name }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="Last name"><h6>Last name</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="Last name"><h6>{{ user.last_name }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="location"><h6>Location</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="location"><h6>{{ user.country }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <h3 class="mt-2"><i class="fas fa-user-graduate pr-2"></i>Profesional info</h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="university"><h6>University</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="university"><h6>{{ user.university }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="Academic degree"><h6>Academic Degree</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="Academic degree"><h6>{{ user.academic_degree }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <h3 class="mt-2"><i class="fas fa-users pr-2"></i>Social Media</h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="linkedin"><h6>Linkedin</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="linkedin"><h6>{{ user.linkedin }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="github"><h6>Github</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="github"><h6>{{ user.github }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-5 text-left">
+                                            <label for="twitter"><h6>Twitter</h6></label>
+                                        </div>
+                                        <div class="col-7 text-left">
+                                            <label for="twitter"><h6>{{ user.twitter }}</h6></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group float float-right">
+                            <div class="col-12">
+                                <br />
+                                <a class="btn btn-lg btn-danger btn-responsive" href="{% url "pages:update-page"%}" tittle="Edit Profile"><i class="fas fa-user-edit wy-100 mr-0"></i> Edit Profile</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

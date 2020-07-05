@@ -1,0 +1,18 @@
+<!-- templates/signup.html -->
+{% extends 'base.html' %}
+
+{% block title %}List of exams | Another E-learning Platform{% endblock %}
+
+{% block content %}
+<a href=" {% url "exams:exam-create"%}">Create Quiz</a>
+<hr/>
+{% if empty == True%}
+<p> No existen Examenes que mostrar</p>
+{% else %}
+{% for exam in Exams %}
+    <p> {{ exam.id}} - "{{ exam.user }}:" - <a href=" {{ exam.getAbsoluteUrl }}">{{ exam.name }}</a></p>
+{% endfor %}
+{% endif %}
+
+
+{% endblock %}

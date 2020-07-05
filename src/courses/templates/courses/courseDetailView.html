@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Detail of Course | Another E-learning Platform{% endblock %}
+
+{% block content %}
+<div id="course" class="container mt-5">
+    <div id=" course-tittle" class="jumbotron pt-3 mb-0">
+        <div class="container push-spaces">
+            <p id="courseTitle" class="h1"><strong>{{ course_instance.name }}</strong></p>
+            <p>{{ course_instance.user.get_full_name }} <span class="badge badge-success">Principal instructor</span></p>
+            <div class="d-flex flex-row-reverse">
+                {% if not Owner %}
+                    {% if Registered %}
+                    <a class="btn btn-warning" href="{{ course_instance.get_home_url }}" title='Edit Course'>Go Course</a>
+                    {% else %}                
+                    <form method='POST' action="{{ course_instance.get_enroll_url }}"> {% csrf_token %}
+                        <button type='submit' class="btn btn-warning">Enroll</button>
+                    </form>
+                    {% endif %}
+                {% else %}
+                <a class="btn btn-info" href="{{ course_instance.get_edit_url }}" title='Edit Course'><em class="fa fa-pencil wy-100 mr-0 pr-1"></em>Edit</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div id="course-data" class="">
+        <nav class="navbar navbar-expand-md navbar-new-bottom navbar-dark bg-dark d-flex justify-content-center">
+            <div class="pt-2 pt-md-0" id="navbar2">
+                <ul class="nav">
+                    <li class="nav-item active pr-3">
+                        <a class="nav-link-xs text-white" href="#about">About</a>
+                    </li>
+                    <li class="nav-item active px-3">
+                        <a class="nav-link-xs text-white" href="#instructors">Instructor</a>
+                    </li>
+                    <li class="nav-item active pl-3">
+                        <a class="nav-link-xs text-white" href="#module_instances">Program</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="mt-3">
+          <div id="about" class="tab-pane fade show active" role="tabpanel" aria-labelledby="about-tab">
+            <div class="card-header">
+                <h4 class="">
+                    <i class="fas fa-align-justify wy-100 mr-3"></i>
+                    About
+                </h4>
+            </div>
+            <div class="card-body ml-0">
+                <p class="">{{ course_instance.description }}</p>
+                <div class="card mr-sm-5 mr-0">
+                    <div class="card-header text-muted">
+                        <i class="fas fa-clipboard-list wy-100 mr-2"></i>
+                        <strong>
+                            What will you learn
+                        </strong>
+                    </div>
+                    <div class="card-body">
+                        {% for learn in course_instance.get_what_learns %}
+                        <div class="container" role="group">
+                            <a class="check btn pr-0 text-mute m-auto" style="font-size: 0.875rem; padding: 0.1875rem 1.125rem;" aria-label="Check">
+                                <span class="fas fa-check"></span>
+                            </a>
+                            <span class="pl-0 text-dark col text-left text-wrap" style="font-size: 0.875rem; padding: 0.1875rem 1.125rem; margin: .5rem!important;">
+                                {{ learn }}
+                            </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div id="instructors" class="tab-pane" role="tabpanel" aria-labelledby="instructor-tab">
+            <div class="card-header">
+                <h4 class="">
+                    <i class="fas fa-user wy-100 mr-3"></i>
+                    Instructor
+                </h4>
+            </div>
+            <div class="card-body ml-0 col-12 col-md-10 col-lg-8 col-xl-6">
+                <div class="d-flex flex-column flex-sm-row border rounded p-3">
+                    <div class="p-0 col-10 col-sm-4 m-auto">
+                        <img alt="Instructor photo" src="{{ course_instance.user.avatar.url }}" id="profile" class="rounded-circle img-sm-thumbnail border-0 w-100"/>
+                    </div>
+                    <div class="p-0 pt-2 pt-sm-0 pl-md-3 col-12 col-sm-7 col-lg-8 col-xl-9">
+                        <div class="align-items-start">
+                            <h4 class="text-black">{{ course_instance.user.get_full_name }}</h4>
+                            <h5 class="text-black">{{ course_instance.user.get_academic_degree }}</h5>
+                        </div>
+                        <div class="align-items-end text-muted">
+                        {% if course_instance.user.get_social_media.exist %}
+                            <ul class="m-0 float-left" style="list-style: none; margin:0; padding: 0">    
+                            {% for k in course_instance.user.get_social_media %}
+                                {% if k != 'exist'%}
+                                <li>
+                                    <a class="nav-link-xs" href="{{ course_instance.user.get_social_media.k }}">
+                                        <i class="fab fa-{{ k }}"></i>
+                                        {{ k }}
+                                    </a>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="module_instances" class="tab-pane" role="tabpanel" aria-labelledby="instructor-tab">
+            <div class="card-header">
+                <h4>
+                    <i class="fas fa-cubes wy-100 mr-3"></i>
+                    Program
+                </h4>
+            </div>
+            <div class="card-body ml-0">
+                <div id="accordion">
+                    {% for _, module_instance in course_instance.get_modules_instances %}
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-{{ module_instance|slugify }}" aria-expanded="true" aria-controls="collapse-{{ module_instance|slugify }}">
+                                    <i class="fas fa-cube wy-100 mr-0 mr-sm-3"></i>
+                                    {{ module_instance.name }}
+                                </button>
+                            </h5>
+                        </div>
+                  
+                        <div id="collapse-{{ module_instance|slugify }}" class="collapse" aria-labelledby="heading{{ module_instance|slugify }}" data-parent="#accordion">
+                            <div class="card-body p-0 p-sm-20">
+                                {% for segment_instance in module_instance.get_segments_instances %}
+                                    <p class="mt-2 ml-3 ml-sm-4 ml-xl-5">
+                                        <i class="fas fa-dice-d6 mr-1"></i>
+                                        {{ segment_instance.name }}
+                                    </p>
+                                    {% for content_instance in segment_instance.get_contents_instances %}
+                                    <div class="row ml-5 ml-sm-5 ml-md-4 ml-lg-3">
+                                        <div class="col-1 col-sm-1 d-flex flex-row-reverse pr-0">
+                                            {% if content_instance.content_type == '1' %}
+                                            <i class="fas fa-book-open wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '2' %}
+                                            <i class="fas fa-book-open wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '3' %}
+                                            <i class="far fa-play-circle wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '4' %}
+                                            <i class="fas fa-file-invoice wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '5' %}
+                                            <i class="fas fa-list-ol wy-100 my-auto mr-1"></i>
+                                            {% else %}
+                                            <i class="fas fa-times wy-100 mr-1"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col col-sm-auto">
+                                            <p class="ml-0 my-auto">
+                                                <strong>{{ content_instance.getType }}: </strong>{{ content_instance.name }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

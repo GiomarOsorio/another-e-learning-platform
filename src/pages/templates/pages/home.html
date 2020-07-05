@@ -1,0 +1,106 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home | Another E-learning Platform{% endblock %}
+
+
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container text-center">
+        <h1 class="display-4">Welcome to Another E-learning Platform</h1>
+        <p class="lead">A simple platform to create and take courses online.</p>
+        {% if not user.is_authenticated %}
+        <button class="btn btn-lg btn-warning my-2 my-sm-0" href=" {% url "pages:register-page"%} " data-toggle="modal" data-target="#SignIn-SignUp">Join!</button>
+        {% endif %}
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+<div class="container">
+    <h3>My Courses</h3>
+    <hr />
+    <div class="container mt-1">
+        <div class="row d-flex justify-content-center">
+            {% if not courses_relations.empty %}
+            {% for courses_relation in courses_relations %}
+            <div class="card mt-3 mx-2" style="width: 18rem;">
+                <img 
+                    class="card-img-top" 
+                    src="{{ courses_relation.course.banner.url }}" 
+                    alt="banner {{ courses_relation.course.name }}"  
+                    data-holder-rendered="true" 
+                    style="height: 180px; width: 100%; display: block;"
+                />
+                <div class="card-body">
+                    <h5 class="card-title">{{ courses_relation.course.name }} <small class="text-muted" style="font-size: 0.875rem;">By {{ courses_relation.course.get_owner }}</small></h5>
+                    <p class="card-text">{{ courses_relation.course.description|truncatechars:195 }}{% if courses_relation.course.description|length > 195 %}...{% endif %}</p>
+                    <a href="{{ courses_relation.course.get_home_url }}" class="btn btn-success float-right">Go Course</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h2><i class="fas fa-frown pr-2" style="color:#787676;"></i>you are not yet enrolled in any course!</h2>
+            {% endif %}
+        </div>
+        <div class="row mt-5 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item {% if not courses_relations.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if courses_relations.has_previous %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}my_courses={{ courses_relations.previous_page_number }}{% else %}#{% endif %}" tabindex="-1">Previous</a>
+                    </li>
+
+                    {% for num in courses_relations.paginator.page_range %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}my_courses={{ num }}">
+                            {% if courses_relations.number == num %}
+                            <strong>{{ num }}</strong>
+                            {% else %} {{ num }} {% endif %}
+                        </a>
+                    </li>
+                    {% endfor %}
+
+                    <li class="page-item {% if not courses_relations.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if courses_relations.has_next %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}my_courses={{ courses_relations.next_page_number }}{% else %}#{% endif %}" tabindex="-1">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container my-5">
+    <div class="float-left"><h3>Some Courses</h3></div>
+    <div class="float-right">
+        <a type="button" href="{% url "courses:course-list"%}" href="" class="btn btn-success btn-sm my-auto"><span class="my-auto">Browse all</span></a>
+    </div>
+    <br/>
+    <hr />
+    <div class="container mt-1">
+        <div class="row d-flex justify-content-center">
+            {%if courses_instances%}
+            {% for course in courses_instances %}
+            <div class="card mt-3 mx-2" style="width: 18rem;">
+                <img
+                    class="card-img-top"
+                    alt="banner {{ course.name }}"
+                    src="{{ course.banner.url }}"
+                    data-holder-rendered="true"
+                    style="height: 180px; width: 100%; display: block;"
+                />
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.name }} <small class="text-muted" style="font-size: 0.875rem;">By {{ course.get_owner }}</small></h5>
+                    <p class="card-text">{{ course.description|truncatechars:195 }}{% if course.description|length > 195 %}...{% endif %}</p>
+                    <a href="{{ course.get_detail_url }}" class="btn btn-success float-right">View more</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h2><i class="fas fa-frown pr-2" style="color:#787676;"></i>There is no course on the platform</h2>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

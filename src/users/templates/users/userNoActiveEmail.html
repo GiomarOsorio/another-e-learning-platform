@@ -1,0 +1,27 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Account not active | Another E-learning Platform{% endblock %}
+
+{% block content%}
+<div class="row">
+    <div class="col-md-6 mx-auto mt-5">
+        <!-- form card login -->
+        <div class="card rounded-0" id="login-form">
+            <form class="form" role="form" autocomplete="off" id="reSendVerificationEmail" novalidate="" method="POST" action="{% url 'pages:re-send-activate-email-link' username=username%}">
+                {% csrf_token %}
+                <div class="card-header">
+                    <h3 class="mb-0">Account not active</h3>
+                </div>
+                <div class="card-body">        
+                    <p>Hi <strong>{{ username }}</strong></p>
+                    <p>You must first activate your account, we have sent an email with the activation link, you can also request a new activation link by click the "send" button</p>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success" id="btnLogin">re-send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

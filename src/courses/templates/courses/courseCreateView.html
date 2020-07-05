@@ -1,0 +1,520 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Create Courses | Another E-learning Platform{% endblock %}
+
+{% block content %}
+<div class="row mx-0 mt-5">
+    <div class="col-md-10 col-lg-8 mx-auto">
+        <h3>Create Course</h3>
+        <hr />
+        <div class="card rounded-lg border-left-info" id="login-form">
+            <div class="card-body">
+                <form id="course_form" class="form" role="form" autocomplete="on" method="POST">
+                    <div class="mt-2 mt-dm-1">
+                        <label for=" {{ course_form.name.id_for_label }}_course ">{{ course_form.name.label }}</label>
+                        <a 
+                            {% comment %} href="#{{ course_form.name.id_for_label }}_course " {% endcomment %}
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.name.label }}"
+                            data-content="{{ course_form.name.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <input
+                            type="{{ course_form.name.field.widget.input_type }}"
+                            name="{{ course_form.name.name }}"
+                            autocomplete="{{ Course_form.name.autocomplete }}"
+                            requeried
+                            id="{{ course_form.name.id_for_label }}_course"
+                            class="form-control form-control-lg"
+                            {% if course_form.name.value != None %}
+                            value="{{ course_form.name.value }}"
+                            {% endif %}
+                        />
+                        {% for error in course_form.name.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                        {% comment %} <small id="helptext" class="form-text text-muted mb-3">{{ course_form.name.help_text }}</small> {% endcomment %}
+                    </div>
+                    <div class="mt-4 mt-sm-2 mt-dm-1">
+                        <label for=" {{ course_form.description.id_for_label }} ">{{ course_form.description.label }}</label>
+                        <a 
+                            {% comment %} href="#{{ course_form.description.id_for_label }}" {% endcomment %}
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.description.label }}"
+                            data-content="{{ course_form.description.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <textarea
+                            type="{{ course_form.description.field.widget.input_type }}"
+                            name="{{ course_form.description.name }}"
+                            autocomplete="{{ Course_form.description.autocomplete }}"
+                            requeried
+                            id="{{ course_form.description.id_for_label }}"
+                            class="form-control form-control-lg"
+                        >{% if course_form.description.value != None %}{{ course_form.description.value }}{% endif %}</textarea>
+                        {% for error in course_form.description.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                        {% comment %} <small id="helptext" class="form-text text-muted mb-3">{{ course_form.description.help_text }}</small> {% endcomment %}
+                    </div>
+                    <div class="mt-4 mt-sm-2 mt-dm-1">
+                        <label for="{{ course_form.banner.id_for_label }}">{{ course_form.banner.label }}</label>
+                        <a 
+                            {% comment %} href="#{{ course_form.banner.id_for_label }}" {% endcomment %}
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.banner.label }}"
+                            data-content="{{ course_form.banner.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="{{ course_form.banner.label }}Addon">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input
+                                    type="{{ course_form.banner.field.widget.input_type }}"
+                                    name="{{ course_form.banner.name }}"
+                                    requeried
+                                    id="{{ course_form.banner.id_for_label }}"
+                                    class="custom-file-input"
+                                    {% if course_form.banner.value != None %}
+                                    value="{{ course_form.banner.value }}"
+                                    {% endif %}
+                                />
+                                <label class="custom-file-label" for="{{ course_form.banner.id_for_label }}">Choose file</label>
+                            </div>
+                        </div>
+                        {% for error in course_form.banner.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                        {% comment %} <small id="helptext" class="form-text text-muted mb-3">{{ course_form.banner.help_text }}</small> {% endcomment %}
+                    </div>
+                    <div class="mt-4 mt-sm-2 mt-dm-1">
+                        <label for=" {{ course_form.what_learn.id_for_label }} ">{{ course_form.what_learn.label }}</label>
+                        <a 
+                            {% comment %} href="#{{ course_form.what_learn.id_for_label }}" {% endcomment %}
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.what_learn.label }}"
+                            data-content="{{ course_form.what_learn.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <div id="div-what_learn" class="input-group mx-0">
+                            <textarea
+                                type="{{ course_form.what_learn.field.widget.input_type }}"
+                                name="{{ Course_form.what_learn.name }}"
+                                autocomplete="{{ course_form.what_learn.autocomplete }}"
+                                requeried
+                                id="{{ Course_form.what_learn.id_for_label }}"
+                                class="form-control width100"
+                            ></textarea>    
+                            <span class="input-group-btn ml-2">
+                                <a id="addwhat_learn" class="btn bg-info text-white float-right addwhat_learn"><i class="fas fa-plus"></i></a>
+                            </span>
+                        </div>
+                        {% comment %} <small id="helptext" class="form-text text-muted mb-3">{{ course_form.what_learn.help_text }}</small> {% endcomment %}
+                        {% for error in course_form.what_learn.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                        <div id="what_learns">
+                        </div>
+                    </div>
+                    <div class="mt-4 mt-sm-2 mt-dm-1">
+                        <label for=" {{ course_form.tags.id_for_label }} ">{{ course_form.tags.label }}</label>
+                        <a 
+                            {% comment %} href="#{{ course_form.tags.id_for_label }}" {% endcomment %}
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.tags.label }}"
+                            data-content="{{ course_form.tags.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <div id="div-tags" class="input-group mx-0">
+                            <input
+                                type="{{ course_form.tags.field.widget.input_type }}"
+                                name="{{ course_form.tags.name }}"
+                                autocomplete="{{ Course_form.tags.autocomplete }}"
+                                requeried
+                                id="{{ course_form.tags.id_for_label }}"
+                                class="form-control width100"
+                            />
+                            <span class="input-group-btn ml-2">
+                                <a id="addtags" class="btn bg-info text-white float-right addtags"><i class="fas fa-plus"></i></a>
+                            </span>
+                        </div>
+                        {% comment %} <small id="helptext" class="form-text text-muted mb-3">{{ course_form.tags.help_text }}</small> {% endcomment %}
+                        {% for error in course_form.tags.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                        <div id="learn_tags">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if course_form.has_children_forms %}
+    {% for module_form in course_form.modules_forms %}
+    <div id="card-module-0" class="row containermodule mx-0" data-id="0">
+        <div class="col-md-10 col-lg-8 mx-auto mt-4">
+            <div id="module-segment-content-form" class="card rounded-lg">
+                <div class="card-body border-left border-primary">
+                    <form id="form-module" method="POST">
+                        <div class="form-row">
+                            <div class="col">
+                                <label class="width100 mr-auto my-auto"  for=" {{ module_form.name.id_for_label }}_module ">
+                                    {{ module_form.name.label }}
+                                    <a 
+                                        {% comment %} href="#" {% endcomment %}
+                                        data-toggle="popover"
+                                        title="Help text for input {{ module_form.name.label }}"
+                                        data-content="{{ module_form.name.help_text }}"
+                                        data-placement="top"
+                                        class="text-primary"
+                                    ><i class="far fa-question-circle fa-1x"></i></a>
+                                </label>
+                                <input
+                                    id="{{ module_form.name.id_for_label }}_module"
+                                    type="{{ module_form.name.widget.input_type }}"
+                                    name="{{ module_form.name.name }}"
+                                    autocomplete="{{ module_form.name.autocomplete }}"
+                                    requeried
+                                    class="form-control {{ module_form.name.id_for_label }}"
+                                    {% if module_form.name.value != None %}
+                                    value="{{ module_form.name.value }}"
+                                    {% endif %}
+                                />
+                                {% for error in module_form.name.errors %}
+                                <small class="alert-danger">{{ error }}</small>
+                                {% endfor %}
+                                {% comment %} <small id="helptext" class="form-text text-muted">{{ module_form.name.help_text }}</small> {% endcomment %}
+                            </div>
+                        </div>
+                    </form>
+                    <form class="mt-2 form-segments">
+                        {% for segment_form in module_form.segments_forms %}
+                        <div id="card-segment-0" class="containersegment" data-id="0">
+                            <div class="form-row mt-2 mx-0 pl-3">
+                                <div class="col">
+                                    <div class="input-group mx-0">
+                                            <label class="width100 mr-auto my-auto"  for="{{ segment_form.name.id_for_label }}_segment">
+                                                {{ segment_form.name.label }}
+                                                <a 
+                                                    {% comment %} href="#" {% endcomment %}
+                                                    data-toggle="popover"
+                                                    title="Help text for input {{ segment_form.name.label }}"
+                                                    data-content="{{ segment_form.name.help_text }}"
+                                                    data-placement="top"
+                                                    class="text-primary"
+                                                ><i class="far fa-question-circle fa-1x"></i></a>
+                                            </label>
+                                        <span class="input-group-btn ml-2">
+                                            <a class="btn bg-secondary text-white float-right del-segment form-control"><i class="fas fa-trash-alt"></i></a>
+                                        </span>
+                                    </div>
+                                    <input
+                                        id="{{ segment_form.name.id_for_label }}_segment"
+                                        type="{{ segment_form.name.widget.input_type }}"
+                                        name="{{ segment_form.name.name }}"
+                                        autocomplete="{{ segment_form.name.autocomplete }}"
+                                        requeried
+                                        class="form-control {{ segment_form.name.id_for_label }}"
+                                        {% if segment_form.name.value != None %}
+                                        value="{{ segment_form.name.value }}"
+                                        {% endif %}
+                                    />
+                                </div>
+                            </div>
+                            {% for error in segment_form.name.errors %}
+                            <div class="form-row mt-2 mx-0 pl-3">
+                                <small class="alert-danger">{{ error }}</small>
+                            </div>
+                            {% endfor %}
+                            {% comment %} <div class="form-row m-0 pl-3">
+                                <small id="helptext" class="form-text text-muted">{{ segment_form.name.help_text }}</small>
+                            </div> {% endcomment %}
+                            {% for content_form in segment_form.contents_forms %}
+                            <div class="form-containercontent" data-id="0">
+                                <div class="form-row mt-2 mx-0 pl-5">
+                                    <div class="col">
+                                        <div class="row mx-0">
+                                            <div class="col-11 col-sm-11 pl-0">
+                                                <label for="{{ content_form.name.id_for_label }}_content">
+                                                {{ content_form.name.label }}
+                                                    <a 
+                                                        {% comment %} href="#" {% endcomment %}
+                                                        data-toggle="popover"
+                                                        title="Help text for input {{ content_form.name.label }}"
+                                                        data-content="{{ content_form.name.help_text }}"
+                                                        data-placement="top"
+                                                        class="text-primary"
+                                                    ><i class="far fa-question-circle fa-1x"></i></a>
+                                                </label>
+                                            </div>
+                                            <div class="col-0 col-sm-0 pr-0 delcontent">
+                                                <a class="btn bg-secondary text-white float-right del-content form-control"><i class="fas fa-trash-alt mr-1"></i></a>
+                                            </div>
+                                        </div>
+                                        <input
+                                            id="{{ content_form.name.id_for_label }}_content"
+                                            type="{{ content_form.name.widget.input_type }}"
+                                            name="{{ content_form.name.name }}"
+                                            autocomplete="{{ content_form.name.autocomplete }}"
+                                            requeried
+                                            class="form-control contentname"
+                                            {% if content_form.name.value != None %}
+                                            value="{{ content_form.name.value }}"
+                                            {% endif %}
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2 mx-0 pl-5 errors">
+                                    <div class="col pl-0 errorname">
+                                        {% for error in content_form.name.errors %}
+                                        <small class="alert-danger">{{ error }}</small>
+                                        {% endfor %}                            
+                                    </div>
+                                </div>
+                                {% comment %} <div class="form-row m-0 pl-5">
+                                    <div class="col pl-0">
+                                        <small id="helptext" class="form-text text-muted">{{ content_form.name.help_text }}</small>
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="form-row mt-2 mx-0 pl-5 containercontentitle">
+                                    <div class="col-6 col-sm-3 pl-0">
+                                        <small>Type of content</small>
+                                    </div>
+                                    <div class="col-6 col-sm-9 px-0">
+                                        <small>Content</small>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2 mx-0 pl-5 containercontent">
+                                    <div class="col-5 col-sm-3 pl-0">
+                                        <select class="form-control {{ content_form.content_type.id_for_label }}" requeried/>
+                                            {% for x,y in content_form.content_type.field.choices %}
+                                            <option value="{{ x }}" {% if content_form.content_type.value == x %} selected {% endif %}>{{ y }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-7 col-sm-8 px-0 content">
+                                        <textarea 
+                                        placeholder="Enter text in plain text format" 
+                                        autocomplete 
+                                        requeried 
+                                        class="form-control form-control-lg contentdata"
+                                        >{% if content_form.content.value != 'None' %}{{ content_form.content.value }}{% endif %}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2 mx-0 pl-5 errors">
+                                    <div class="col-5 col-sm-3 pl-0 errorcontenttype">
+                                        {% for error in content_form.answer_form.errors %}
+                                        <small class="alert-danger">{{ error }}</small>
+                                        {% endfor %}      
+                                    </div>
+                                    <div class="col-7 col-sm-8 px-0 errorcontent">
+                                        {% for error in content_form.content.errors %}
+                                        <small class="alert-danger">{{ error }}</small>
+                                        {% endfor %}      
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <div id="div-addcontent" class="row mt-2 d-flex justify-content-end">
+                                <div class="col-4 col-sm-4">
+                                    <a class="btn bg-info text-white float-right add-content"><span><i class="fas fa-plus" aria-hidden="true"></i> Content</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <hr />
+                        <div class="col mt-1">
+                            <a class="btn bg-secondary text-white float-left del-module"><i class="fas fa-trash-alt"></i>Module</a>
+                            <div id="div-addsegment" class="row d-flex justify-content-end">
+                                <div class="col-5 col-sm-5">
+                                    <a class="btn bg-info text-white float-right add-segment"><span><i class="fas fa-plus"></i> Segment</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+
+<div id="button-controls" class="row border-0 mx-0">
+    <div class="col-md-10 col-lg-8 mx-auto mt-0 border-0">
+        <div class="card rounded-lg border-0">
+            <div class="card-body border-0">
+                {% csrf_token %}
+                <input type="hidden" name="hasModule" value="{{ course_form.has_children_forms }}"/>
+                <a id="create-module" class="btn bg-info text-white float-left"><i class="fas fa-plus"></i> Module</a>
+                <a id="create-course" class="btn bg-success text-white float-right"><i id="wait" class="fa"></i>  Create Course</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="module-template">
+    <div id="card-module-0" class="row containermodule mx-0" data-id="0">
+        <div class="col-md-10 col-lg-8 mx-auto mt-4">
+            <div id="module-segment-content-form" class="card rounded-lg">
+                <div class="card-body border-left border-primary">
+                    <form id="form-module" method="POST">
+                        <div class="form-row">
+                            <div class="col">
+                                <label for=" {{ course_form.get_module_template.name.id_for_label }}_module ">
+                                    {{ course_form.get_module_template.name.label }}
+                                    <a 
+                                        {% comment %} href="#{{ course_form.get_module_template.name.id_for_label }}_module" {% endcomment %}
+                                        data-toggle="popover"
+                                        title="Help text for input {{ course_form.get_module_template.name.label }}"
+                                        data-content="{{ course_form.get_module_template.name.help_text }}"
+                                        data-placement="top"
+                                        class="text-primary"
+                                    ><i class="far fa-question-circle fa-1x"></i></a>
+                                </label>
+                                <input
+                                    id="{{ course_form.get_module_template.name.id_for_label }}_module"
+                                    type="{{ course_form.get_module_template.name.widget.input_type }}"
+                                    name="{{ course_form.get_module_template.name.name }}"
+                                    autocomplete="{{ course_form.get_module_template.name.autocomplete }}"
+                                    requeried
+                                    class="form-control {{ course_form.get_module_template.name.id_for_label }}"
+                                />
+                                {% comment %} <small id="helptext" class="form-text text-muted">{{ course_form.get_module_template.name.help_text }}</small> {% endcomment %}
+                            </div>
+                        </div>
+                    </form>
+                    <form class="mt-2 form-segments">
+                        <hr />
+                        <div class="input-group justify-content-between mt-1">
+                            <a class="btn bg-secondary text-white float-left del-module"><i class="fas fa-trash-alt mr-2"></i>Module</a>
+                            <a class="btn bg-info text-white float-right add-segment"><i class="fas fa-plus"></i> Segment</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="segment-template">
+    <div id="card-segment-0" class="containersegment" data-id="0">
+        <div class="form-row mt-2 mx-0 pl-3">
+            <div class="col">
+                <div class="input-group mx-0">
+                    <label class="width100 mr-auto my-auto" for="{{ course_form.get_segment_template.name.id_for_label }}_segment">
+                        {{ course_form.get_segment_template.name.label }}
+                        <a 
+                            {% comment %} href="#{ course_form.get_segment_template.name.id_for_label }}_segment" {% endcomment %}
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.get_segment_template.name.label }}"
+                            data-content="{{ course_form.get_segment_template.name.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                    </label>
+                    <span class="input-group-btn ml-2">
+                        <a class="btn bg-secondary text-white float-right del-segment form-control"><i class="fas fa-trash-alt"></i></a>
+                    </span>
+                </div>
+                <input
+                    id="{{ course_form.get_segment_template.name.id_for_label }}_segment"
+                    type="{{ course_form.get_segment_template.name.widget.input_type }}"
+                    name="{{ course_form.get_segment_template.name.name }}"
+                    autocomplete="{{ course_form.get_segment_template.name.autocomplete }}"
+                    requeried
+                    class="form-control {{ course_form.get_segment_template.name.id_for_label }}"
+                />
+                {% comment %} <small id="helptext" class="form-text text-muted">{{ course_form.get_segment_template.name.help_text }}</small> {% endcomment %}
+            </div>
+        </div>
+        <div class="form-row m-0 pl-3">
+            <small id="helptext" class="form-text text-muted">{{ segment_form.name.help_text }}</small>
+        </div>
+        <div id="div-addcontent" class="row mt-2 d-flex justify-content-end">
+            <div class="col-4 col-sm-4">
+                <a class="btn bg-info text-white float-right add-content"><span><i class="fas fa-plus"></i> Content</span></a>
+            </div>
+        </div> 
+    </div>
+</template>
+
+<template id="content-template">
+    <div class="form-containercontent" data-id="0">
+        <div class="form-row mt-2 mx-0 pl-5">
+            <div class="col">
+                <div class="input-group">
+                    <label class="width100 mr-auto my-auto" for="{{ course_form.get_content_template.name.id_for_label }}_content">
+                    {{ course_form.get_content_template.name.label }}
+                        <a 
+                            data-toggle="popover"
+                            title="Help text for input {{ course_form.get_content_template.name.label }}"
+                            data-content="{{ course_form.get_content_template.name.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                    </label>
+
+                    <span class="input-group-btn ml-2">
+                        <a class="btn bg-secondary text-white float-right del-content form-control"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+                <input
+                    id="{{ course_form.get_content_template.name.id_for_label }}_content"
+                    type="{{ course_form.get_content_template.name.widget.input_type }}"
+                    name="{{ course_form.get_content_template.name.name }}"
+                    autocomplete="{{ course_form.get_content_template.name.autocomplete }}"
+                    requeried
+                    class="form-control contentname"
+                />
+            </div>
+            <div class="form-row mt-2 mx-0 pl-5 containercontentitle">
+                <div class="col-6 col-sm-3 pl-0">
+                    <small>Type of content</small>
+                </div>
+                <div class="col-6 col-sm-9 px-0">
+                    <small>Content</small>
+                </div>
+            </div>
+            <div class="form-row mt-2 mx-0 pl-5 containercontent">
+                <div class="col-5 col-sm-3 pl-0">
+                    <select class="form-control {{ course_form.get_content_template.content_type.id_for_label }}" requeried/>
+                        {% for x,y in course_form.get_content_template.content_type.field.choices %}
+                        <option value="{{ x }}" {% if x == "1" %} selected {% endif %}>{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-7 col-sm-8 px-0 content">
+                    <textarea placeholder="Enter text in plain text format" autocomplete requeried class="form-control form-control-lg contentdata"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="exams-template">
+    <div class="col-8 col-sm-8 px-0 content">
+        <select class="form-control form-control-lg contentdata" requeried/>
+            <option disabled selected value="None">Select an exam</option>
+            {% for exam_instance in exams_instances %}
+            <option value="{{ exam_instance.id }}">{{ exam_instance.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</template>
+
+{% endblock %}
+{% block body_script %}
+<script type="text/javascript" src="{% static 'js/courseCreateUpdate.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/enable_tooltip.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/enable_popovers.js' %}"></script>
+{% endblock %}

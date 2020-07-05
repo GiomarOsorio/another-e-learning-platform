@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Edit profile | Another E-learning Platform{% endblock %}
+
+{% block content %}
+
+<form enctype="multipart/form-data" action="" method="post" id="user_form" novalidate="">
+    {% csrf_token %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-10"><h1><i class="fas fa-id-card pr-2"></i>Profile Panel</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="text-center">
+                <img 
+                    src="{{ user.avatar.url }}"
+                    class="avatar img-circle rounded-circle img-sm-thumbnail border-0 w-100"
+                    alt="avatar"
+                    style="max-height: 300px; max-width: 300px;"
+                >
+                <h6>Avatar preview</h6>
+            </div>
+            <hr />
+            <br />
+        </div>
+        <div class="col-sm-9">
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                    <hr />
+                    <form class="form" id="registrationForm">
+                        <div class="col-sm-10">
+                            <h3 class="mt-2"><i class="fas fa-user-circle pr-2"></i>Account info</h3>
+                            <hr />
+                            <div class="form-group">
+                                <label for=" {{ user_form.avatar.id_for_label }}_course ">{{ user_form.avatar.label }}</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="{{ user_form.avatar.label }}Addon">Upload</span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input
+                                            type="{{ user_form.avatar.field.widget.input_type }}"
+                                            name="{{ user_form.avatar.name }}"
+                                            autocomplete="{{ user_form.avatar.autocomplete }}"
+                                            requeried
+                                            id="{{ user_form.avatar.id_for_label }}"
+                                            class="custom-file-input"
+                                            {% if user_form.avatar.value != None %}
+                                            value="{{ user_form.avatar.value  }}"
+                                            {% endif %}
+                                        />
+                                        <label class="custom-file-label" for="{{ user_form.avatar.id_for_label }}">Choose file</label>
+                                    </div>
+                                </div>
+                                {% for error in user_form.avatar.errors %}
+                                <small class="alert-danger">{{ error }}</small>
+                                {% endfor %}
+                                <small id="helptext" class="form-text text-muted">{{ user_form.avatar.help_text }}</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for="password"><h6>Password</h6></label>
+                                    <a 
+                                        class="btn btn-info" 
+                                        href="#"
+                                        title='Change Password'
+                                        data-toggle="modal" 
+                                        data-target="#changepassword"
+                                    >Change</a>
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-sm-10">
+                            <h3 class="mt-2"><i class="fas fa-portrait pr-2"></i>Personal info</h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.first_name.id_for_label }}_course ">{{ user_form.first_name.label }}</label>
+                                    <input
+                                        type="{{ user_form.first_name.field.widget.input_type }}"
+                                        name="{{ user_form.first_name.name }}"
+                                        autocomplete="{{ user_form.first_name.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.first_name.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.first_name.value != None %}
+                                        value="{{ user_form.first_name.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.first_name.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.first_name.help_text }}</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.last_name.id_for_label }}_course ">{{ user_form.last_name.label }}</label>
+                                    <input
+                                        type="{{ user_form.last_name.field.widget.input_type }}"
+                                        name="{{ user_form.last_name.name }}"
+                                        autocomplete="{{ user_form.last_name.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.last_name.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.last_name.value != None %}
+                                        value="{{ user_form.last_name.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.last_name.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.last_name.help_text }}</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.country.id_for_label }}_course ">{{ user_form.country.label }}</label>
+                                    <select id="{{ user_form.country.id_for_label }}" name="country" class="form-control form-control-lg" requeried/>
+                                        {% for x,y in user_form.country.field.choices %}
+                                        <option value="{{ x }}" {% if user_form.country.value == x %} selected {% endif %}>{{ y }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% for error in user_form.country.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.country.help_text }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <h3 class="mt-2"><i class="fas fa-user-graduate pr-2"></i>Profesional info</h3>
+                            <hr />
+                            <div class="form-group">
+                                    <label for=" {{ user_form.university.id_for_label }}_course ">{{ user_form.university.label }}</label>
+                                    <input
+                                        type="{{ user_form.university.field.widget.input_type }}"
+                                        name="{{ user_form.university.name }}"
+                                        autocomplete="{{ user_form.university.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.university.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.university.value != None %}
+                                        value="{{ user_form.university.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.university.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.university.help_text }}</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.academic_degree.id_for_label }}_course ">{{ user_form.academic_degree.label }}</label>
+                                    <input
+                                        type="{{ user_form.academic_degree.field.widget.input_type }}"
+                                        name="{{ user_form.academic_degree.name }}"
+                                        autocomplete="{{ user_form.academic_degree.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.academic_degree.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.academic_degree.value != None %}
+                                        value="{{ user_form.academic_degree.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.academic_degree.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.academic_degree.help_text }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <h3 class="mt-2"><i class="fas fa-users pr-2"></i>Social Media</h3>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.linkedin.id_for_label }}_course ">{{ user_form.linkedin.label }}</label>
+                                    <input
+                                        type="{{ user_form.linkedin.field.widget.input_type }}"
+                                        name="{{ user_form.linkedin.name }}"
+                                        autocomplete="{{ user_form.linkedin.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.linkedin.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.linkedin.value != None %}
+                                        value="{{ user_form.linkedin.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.linkedin.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.linkedin.help_text }}</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.github.id_for_label }}_course ">{{ user_form.github.label }}</label>
+                                    <input
+                                        type="{{ user_form.github.field.widget.input_type }}"
+                                        name="{{ user_form.github.name }}"
+                                        autocomplete="{{ user_form.github.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.github.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.github.value != None %}
+                                        value="{{ user_form.github.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.github.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.github.help_text }}</small>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <label for=" {{ user_form.twitter.id_for_label }}_course ">{{ user_form.twitter.label }}</label>
+                                    <input
+                                        type="{{ user_form.twitter.field.widget.input_type }}"
+                                        name="{{ user_form.twitter.name }}"
+                                        autocomplete="{{ user_form.twitter.autocomplete }}"
+                                        requeried
+                                        id="{{ user_form.twitter.id_for_label }}"
+                                        class="form-control form-control-lg"
+                                        {% if user_form.twitter.value != None %}
+                                        value="{{ user_form.twitter.value  }}"
+                                        {% endif %}
+                                    />
+                                    {% for error in user_form.twitter.errors %}
+                                    <small class="alert-danger">{{ error }}</small>
+                                    {% endfor %}
+                                    <small id="helptext" class="form-text text-muted">{{ user_form.twitter.help_text }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group float float-right">
+                            <div class="col-xs-12">
+                                <br />
+                                <button class="btn btn-lg btn-success btn-success btn-responsive" type="submit"><i class="fas fa-user-edit wy-100 mr-1"></i>Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div class="modal fade" id="changepassword" tabindex="-1" role="dialog" aria-labelledby="changepassword" aria-hidden="true">
+    <form method='POST' action="{% url "pages:changepassword-page"%}"> {% csrf_token %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                    <h1>Change Password</h1>
+            </div>
+            <br>
+            <div class="modal-body">
+                {% for field in change_password_form %}
+                 <div class="form-group">
+                    <label for=" {{ field.id_for_label }} ">{{ field.label }}</label>
+                    <div class="input-group">
+                    {% if field.label != 'Country' %}
+                        <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" {% if field.field.max_length %} maxlength="{{ field.field.max_length }}" {% endif %} {% if field.field.autofocus %} autofocus="{{ field.field.autofocus }}" {% endif %} {% if field.id_for_label == "id_email" %}autocomplete="{{ field.autocomplete }}" {% endif %} required="" id="{{ field.id_for_label }}" class="form-control form-control-lg">
+                    {% else %}
+                        <select name="{{ field.name }}" required="" id="{{ field.id_for_label }}"  class="form-control form-control-lg">
+                        {% for value, text in field.field.choices %}
+                            <option value="{{ value }}" {% if value == "" %} selected="" {% endif %} >{{ text}}</option>
+                        {% endfor %}
+                        </select>
+                    {% endif %}
+                    </div>
+                    {% if field.help_text %}
+                        {% if field.label == 'New password' %}
+                        {% for i in field.help_text %}
+                            <small class="form-text text-muted ml-2 ml-sm-3 ml-md-5 helptext"><i class="far fa-dot-circle mr-1 mr-sm-2"></i>{{ i }}</small>
+                        {% endfor %}
+                            <small class="form-text text-muted ml-2 ml-sm-3 ml-md-5 helptext"><i class="far fa-dot-circle mr-1 mr-sm-2"></i>Your password match</small>
+                        {% else %}
+                            <small id="helptext" class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <center>
+                    <button type='submit' class="btn btn-success" id="submit" disabled>Change</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                </center>
+            </div>
+        </div>
+    </div>
+    </form>
+    <input type='hidden' value='{{ reset_password_form.user.email}}' id='id_email' />
+    <input type='hidden' value='{{ reset_password_form.user.first_name }}' id='id_first_name' />
+    <input type='hidden' value='{{ reset_password_form.user.last_name }}' id='id_last_name' />
+    <input type='hidden' value='{{ reset_password_form.user.country}}' id='id_country' />
+</div>
+
+
+
+{% endblock %}
+{% block body_script %}
+<script type="text/javascript" src="{% static 'js/changePicture.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/enable_tooltip.js' %}"></script>
+{% endblock %}

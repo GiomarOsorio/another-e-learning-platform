@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}My Courses | Another E-learning Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3 class="mt-5">My Courses</h3>
+    <hr />
+    <div class="row d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item {% if not courses_relations.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% if courses_relations.has_previous %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ Courses.previous_page_number }}{% else %}#{% endif %}" tabindex="-1">Previous</a>
+                </li>
+                {% for num in courses_relations.paginator.page_range %}
+                <li class="page-item">
+                    <a class="page-link" href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ num }}">
+                        {% if courses_relations.number == num %}
+                        <strong>{{ num }}</strong>
+                        {% else %}
+                        {{ num }}
+                        {% endif %}
+                    </a>
+                </li>
+                {% endfor %}
+                
+                <li class="page-item {% if not courses_relations.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% if courses_relations.has_next %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ courses_relations.next_page_number }}{% else %}#{% endif %}" tabindex="-1">Next</a>
+                </li>   
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container mt-1">
+        <div class="row d-flex justify-content-center">
+            {% if not courses_empty %}
+            {% for course_relation in courses_relations %}
+            <div class="card mt-3 mx-2" style="width: 18rem;">
+                <img 
+                    class="card-img-top" 
+                    src="{{ course_relation.course.banner.url }}" 
+                    alt="banner {{ course_relation.course.name }}"  
+                    data-holder-rendered="true" 
+                    style="height: 180px; width: 100%; display: block;"
+                />
+                <div class="card-body">
+                    <h5 class="card-title">{{ course_relation.course.name }} <small class="text-muted" style="font-size: 0.875rem;">By {{ course_relation.course.get_owner }}</small></h5>
+                    <p class="card-text">{{ course_relation.course.description|truncatechars:195 }}{% if course_relation.course.description|length > 195 %}...{% endif %}</p>
+                    <a href="{{ course_relation.course.get_home_url }}" class="btn btn-success float-right">Go Course</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <h2><i class="fas fa-frown pr-2" style="color:#787676;"></i>you are not yet enrolled in any course!</h2>
+            {% endif %}  
+        </div>
+        <div class="row mt-5 d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item {% if not courses_relations.has_previous %}disabled{% endif %}">
+                        <a class="page-link" href="{% if courses_relations.has_previous %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ courses_relations.previous_page_number }}{% else %}#{% endif %}" tabindex="-1">Previous</a>
+                    </li>    
+        
+                    {% for num in courses_relations.paginator.page_range %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ num }}">
+                            {% if courses_relations.number == num %}
+                            <strong>{{ num }}</strong>
+                            {% else %}
+                            {{ num }}
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    
+                    <li class="page-item {% if not courses_relations.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{% if courses_relations.has_next %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ courses_relations.next_page_number }}{% else %}#{% endif %}" tabindex="-1">Next</a>
+                    </li>   
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

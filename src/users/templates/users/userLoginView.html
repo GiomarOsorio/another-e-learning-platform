@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | Another E-learning Platform{% endblock %}
+
+{% block content%}
+<div class="container">
+    <div class="col-md-10 col-lg-8 mx-auto my-5">
+        <div class="card rounded-0" id="login-form">
+            <div class="card-header">
+                <h3 class="mb-0">User Login</h3>
+            </div>
+            <div class="card-body">
+                {% for non_field_error in form.non_field_error %}
+                    <div class="alert alert-danger">{{ non_field_errors }}</div>
+                {% endfor %}
+                <form class="form" role="form" autocomplete="off" id="formLogin" novalidate="" method="POST">
+                    {% csrf_token %}
+                    {% if user_login_form.non_field_errors %}
+                        {%for error in user_login_form.non_field_errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                    {% endif %}
+                    {%for field in user_login_form %}
+                    <div class="form-group">
+                        <label for=" {{ field.id_for_label }} ">{{ field.label }}</label>
+                        {% if field.id_for_label == 'id_password' %}
+                        <a href="{% url "pages:send-reset-password-page" %}" class="register-form-link float-right">Forgot password?</a>
+                        {% endif %}
+                        <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" autocomplete="{{ field.autocomplete }}" required="" id="{{ field.id_for_label }}" class="form-control form-control-lg">
+                        {% for error in field.errors %}
+                            <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <br/>
+                    <a href="{% url "pages:register-page" %}" class="register-form-link float-left">Register</a>
+                    <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

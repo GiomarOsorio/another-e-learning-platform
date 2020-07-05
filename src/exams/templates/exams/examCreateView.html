@@ -1,0 +1,402 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load l10n %}
+{% block title %}Create a exam | Another E-learning Platform{% endblock %}
+
+ {% block content %}
+<div class="row mx-0">
+    <div class="col-md-10 col-lg-8 mx-auto mt-5">
+        <h3>Create exam</h3>
+        <hr />
+        <div class="card rounded-lg border-left-info" id="login-form">
+            <div class="card-body ">
+                <form id="exam_form" class="form" role="form" autocomplete="on">
+                    <div class="mt-2 mt-dm-1">
+                        <label for={{ exam_form.name.id_for_label }}>{{ exam_form.name.label }}</label>
+                        <a 
+                            data-toggle="popover"
+                            title="Help text for input {{ exam_form.name.label }}"
+                            data-content="{{ exam_form.name.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <input
+                            id="{{ exam_form.name.id_for_label }}"
+                            name="{{ exam_form.name.name }}"
+                            type="{{ exam_form.name.field.widget.input_type }}"
+                            autocomplete="{{ exam_form.name.autocomplete }}"
+                            required
+                            class="form-control form-control-lg"
+                            {% if exam_form.name.value != None %}
+                            value="{{ exam_form.name.value }}"
+                            {% endif %}
+                        />
+                        {% for error in exam_form.name.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                        {% comment %} <small id="helptext" class="form-text text-muted">{{ exam_form.name.help_text }}</small> {% endcomment %}
+                    </div>
+                    <div class="mt-4 mt-sm-2 mt-dm-1">
+                        <label for={{ exam_form.description.id_for_label }}>{{ exam_form.description.label }}</label>
+                        <a 
+                            data-toggle="popover"
+                            title="Help text for input {{ exam_form.description.label }}"
+                            data-content="{{ exam_form.description.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <textarea 
+                            id="{{ exam_form.description.id_for_label }}"
+                            name="{{ exam_form.description.name }}"
+                            class="form-control"
+                            rows="3"
+                            required
+                        >{% if exam_form.description.value != None %}{{ exam_form.description.value }}{% endif %}</textarea>
+                        {% comment %} <small id="helptext" class="form-text text-muted">{{ exam_form.description.help_text }}</small> {% endcomment %}
+                        {% for error in exam_form.description.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="mt-4 mt-sm-2 mt-dm-1">
+                        <label for={{ exam_form.approved.id_for_label }}>{{ exam_form.approved.label }}</label>
+                        <a 
+                            data-toggle="popover"
+                            title="Help text for input {{ exam_form.approved.label }}"
+                            data-content="{{ exam_form.approved.help_text }}"
+                            data-placement="top"
+                            class="text-primary"
+                        ><i class="far fa-question-circle fa-1x"></i></a>
+                        <input
+                            id="{{ exam_form.approved.id_for_label }}"
+                            name="{{ exam_form.approved.name }}"
+                            type="{{ exam_form.approved.field.widget.input_type }}"
+                            autocomplete="{{ exam_form.approved.autocomplete }}"
+                            required
+                            class="form-control form-control-lg"
+                            max="100.00"
+                            min="0.00"
+                            step="0.01"
+                            {% if exam_form.approved.value != None %}
+                            value="{{ exam_form.approved.value }}"
+                            {% else %}
+                            value="0.00"
+                            {% endif %}
+                        />
+                        {% comment %} <small id="helptext" class="form-text text-muted">{{ exam_form.approved.help_text }}</small> {% endcomment %}
+                        {% for error in exam_form.approved.errors %}
+                        <small class="alert-danger">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if exam_form.has_children_forms %}
+{% for question_form in exam_form.questions_forms %}
+<div class="row card-question mx-0">
+    <div class="col-md-10 col-lg-8 mx-auto mt-4">
+        <div id="question-answers-form" class="card rounded-lg">
+            <div class="card-body border-left border-primary">
+                <form id="form-question">
+                    <div class="form-row">
+                        <div class="col-8 col-sm-9">
+                            <label 
+                                for="{{ question_form.question.id_for_label }}"
+                            >{{ question_form.question.label }}</label>
+                            <a 
+                                data-toggle="popover"
+                                title="Help text for input {{ question_form.question.label }}"
+                                data-content="{{ question_form.question.help_text }}"
+                                data-placement="top"
+                                class="text-primary"
+                            ><i class="far fa-question-circle fa-1x"></i></a>
+                            <input
+                                id="{{ question_form.question.id_for_label }}"
+                                type="{{ question_form.question.widget.input_type }}"
+                                name="{{ question_form.question.name }}"
+                                autocomplete="{{ question_form.question.autocomplete }}"
+                                required
+                                class="form-control"
+                                placeholder="Empty Question"
+                                {% if question_form.name.value != None %}
+                                value="{{ question_form.name.value }}"
+                                {% endif %}
+                            />
+                            {% for error in question_form.name.errors %}
+                            <small class="alert-danger">{{ error }}</small>
+                            {% endfor %}
+                            {% comment %} <small id="helptext" class="form-text text-muted">{{ question_form.question.help_text }}</small> {% endcomment %}
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <label 
+                                for="{{ question_form.question_value.id_for_label }}"
+                            >{{ question_form.question_value.label }}</label>
+                            <a 
+                                data-toggle="popover"
+                                title="Help text for input {{ question_form.question_value.label }}"
+                                data-content="{{ question_form.question_value.help_text }}"
+                                data-placement="top"
+                                class="text-primary"
+                            ><i class="far fa-question-circle fa-1x"></i></a>
+                            <input
+                                id="{{ question_form.question_value.id_for_label }}"
+                                type="{{ question_form.question_value.field.widget.input_type }}"
+                                name="{{ question_form.question_value.name }}"
+                                autocomplete="{{ question_form.question_value.autocomplete }}"
+                                required
+                                class="form-control"
+                                max="100.00"
+                                min="0.00"
+                                step="0.01"
+                                {% if question_form.question_value.value != None %}
+                                value="{{ question_form.question_value.value }}"
+                                {% endif %}
+                            />
+                            <small id="helptext" class="form-text text-muted">{{ question_form.question_value.help_text }}</small>
+                        </div>
+                    </div>
+                    <div id="divanswerlabel" class="row mt-2">
+                        <div class="col-3 col-sm-3 text-left">
+                            <small>{{ exam_form.answerTemplate.correct_answer.field.label }}</small>
+                        </div>
+                        <div class="col-7 col-sm-7 text-center">
+                            <small>{{ exam_form.answerTemplate.answer.field.label }}</small>
+                        </div>
+                        <div class="col-0 col-sm-0">
+                        </div>
+                    </div>
+                </form>
+                <form id="form-answers" class="mt-2">
+                    {%for answer_form in question_form.answersForms %}
+                        <div class="row mt-2 mx-0 containeranswer">
+                            <div class="input-group">
+                                <div class="input-group-prepend col-2 col-sm-2 d-flex justify-content-center">
+                                <label>
+                                    <input
+                                        class="correct_answer"
+                                        name="{{ answer_form.correct_answer.name }}"
+                                        type="checkbox"
+                                        {% if answer_form.is_correct %}
+                                        checked
+                                        {% endif %}
+                                    />
+                                </label>
+                                </div>
+                                 <input
+                                    class="form-control answer"
+                                    placeholder="Empty Answer"
+                                    name="{{ answer_form.answer.name }}"
+                                    {% if answer_form.answer.value != None %}
+                                    value="{{ answer_form.answer.value }}"
+                                    {% endif %}
+                                />
+                                <a class="btn bg-secondary text-white float-right del ml-2"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                            {% comment %} <div class="col-2 col-sm-2 d-flex justify-content-center">
+                                <label>
+                                    <input
+                                        class="correct_answer"
+                                        name="{{ answer_form.correct_answer.name }}"
+                                        type="checkbox"
+                                        {% if answer_form.is_correct %}
+                                        checked
+                                        {% endif %}
+                                    />
+                                </label>
+                            </div>
+                            <div class="col-9 col-sm-9">
+                                <input
+                                    class="form-control answer"
+                                    placeholder="Empty Answer"
+                                    name="{{ answer_form.answer.name }}"
+                                    {% if answer_form.answer.value != None %}
+                                    value="{{ answer_form.answer.value }}"
+                                    {% endif %}
+                                />
+                            </div>
+                            <div class="col-0 col-sm-0">
+                                <a class="btn bg-secondary text-white float-right del"><i class="fas fa-trash-alt"></i></a>
+                            </div> {% endcomment %}
+                        </div>
+                        <div class="form-row mt-2 mx-0 pl-5 errors">
+                            <div class="col-3 col-sm-3 pl-0 errorcorrectanswer">
+                                {% for error in answer_form.correct_answer.errors %}
+                                <small class="alert-danger">{{ error }}</small>
+                                {% endfor %}      
+                            </div>
+                            <div class="col-8 col-sm-8 px-0 erroranswer">
+                                {% for error in answer_form.answer.errors %}
+                                <small class="alert-danger">{{ error }}</small>
+                                {% endfor %}      
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div id="div-addanswer" class="row mt-2 d-flex justify-content-end">
+                        <div class="col-3 col-sm-3">
+                            <a class="btn bg-info text-white float-right add-answer"><span><i class="fas fa-plus"></i> Answer</span></a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col col-sm mt-1">
+                        <a class="btn bg-secondary text-white float-left del-question"><i class="fas fa-trash-alt"></i> Question</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+
+<div id="button-controls"class="row border-0 mx-0">
+    <div class="col-md-10 col-lg-8 mx-auto mt-0 border-0">
+        <div class="card rounded-lg border-0" id="login-form">
+            <div class="card-body border-0">
+                {% csrf_token %}
+                <input type="hidden" name="hasModule" value="{{ exam_form.has_children_forms }}"/>
+                <a id="create-question" class='btn bg-primary text-white float-left'><i class="fas fa-plus"></i> Question</a>
+                <a id="create-exam" class="btn bg-success text-white float-right"><i id="wait" class="fa"></i>  Create Exam</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<template id="question-template">
+<div id="card-question-0" class="row card-question mx-0">
+    <div class="col-md-10 col-lg-8 mx-auto mt-4">
+        <div id="question-answers-form" class="card rounded-lg">
+            <div class="card-body border-left border-primary">
+                <form id="form-question">
+                    <div class="form-row">
+                        <div class="col-8 col-sm-9">
+                            <label 
+                                for="{{ exam_form.questionTemplate.question.id_for_label }}"
+                            >{{ exam_form.questionTemplate.question.label }}</label>
+                            <a 
+                                data-toggle="popover"
+                                title="Help text for input {{ exam_form.questionTemplate.question.label }}"
+                                data-content="{{ exam_form.questionTemplate.question.help_text }}"
+                                data-placement="top"
+                                class="text-primary"
+                            ><i class="far fa-question-circle fa-1x"></i></a>
+                            <input
+                                id="{{ exam_form.questionTemplate.question.id_for_label }}"
+                                type="{{ exam_form.questionTemplate.question.widget.input_type }}"
+                                name="{{ exam_form.questionTemplate.question.name }}"
+                                autocomplete="{{ exam_form.questionTemplate.question.autocomplete }}"
+                                required
+                                class="form-control"
+                                placeholder="Empty Question"
+                                {% if exam_form.questionTemplate.name.value != None %}
+                                value="{{ exam_form.questionTemplate.name.value }}"
+                                {% endif %}
+                            />
+                            {% comment %} <small id="helptext" class="form-text text-muted">{{ exam_form.questionTemplate.question.help_text }}</small> {% endcomment %}
+                        </div>
+                        <div class="col-4 col-sm-3">
+                            <label 
+                                for="{{ exam_form.questionTemplate.question_value.id_for_label }}"
+                            >{{ exam_form.questionTemplate.question_value.label }}</label>
+                            <a 
+                                data-toggle="popover"
+                                title="Help text for input {{ exam_form.questionTemplate.question_value.label }}"
+                                data-content="{{ exam_form.questionTemplate.question_value.help_text }}"
+                                data-placement="top"
+                                class="text-primary"
+                            ><i class="far fa-question-circle fa-1x"></i></a>
+                            <input
+                                id="{{ exam_form.questionTemplate.question_value.id_for_label }}"
+                                type="{{ exam_form.questionTemplate.question_value.field.widget.input_type }}"
+                                name="{{ exam_form.questionTemplate.question_value.name }}"
+                                autocomplete="{{ exam_form.questionTemplate.question_value.autocomplete }}"
+                                required
+                                class="form-control"
+                                max="100.00"
+                                min="0.00"
+                                step="0.01"
+                                value="0.00"
+                            />
+                            {% comment %} <small id="helptext" class="form-text text-muted">{{ exam_form.questionTemplate.question_value.help_text }}</small> {% endcomment %}
+                        </div>
+                    </div>
+                    <div id="divanswerlabel" class="row mt-2">
+                        <div class="col-3 col-sm-3 text-left">
+                            <small>{{ exam_form.answerTemplate.correct_answer.field.label }}</small>
+                        </div>
+                        <div class="col-7 col-sm-7 text-center">
+                            <small>{{ exam_form.answerTemplate.answer.field.label }}</small>
+                        </div>
+                        <div class="col-0 col-sm-0">
+                        </div>
+                    </div>
+                </form>
+                <form id="form-answers" class="mt-2">
+                    <div id="div-addanswer" class="row mt-2 d-flex justify-content-end">
+                        <div class="col-3 col-sm-3">
+                            <a class="btn bg-info text-white float-right add-answer"><span><i class="fas fa-plus"></i> Answer</span></a>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col col-sm mt-1">
+                        <a class="btn bg-secondary text-white float-left del-question"><i class="fas fa-trash-alt"></i> Question</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+
+<template id="answer-template">
+    <div id="card-anwer-0" class="row mt-2 mx-0 containeranswer">
+        <div class="input-group">
+            <div class="input-group-prepend col-2 col-sm-2 d-flex justify-content-center">
+                <label>
+                    <input
+                        class="correct_answer"
+                        name="{{ exam_form.answerTemplate.correct_answer.name }}"
+                        type="checkbox"
+                    />
+                </label>
+            </div>
+            <input
+                class="form-control answer"
+                placeholder="Empty Answer"
+                name="{{ exam_form.answerTemplate.answer.name }}"
+            />
+            <a class="btn bg-secondary text-white float-right del ml-2"><i class="fas fa-trash-alt"></i></a>
+        </div>
+        {% comment %} <div class="col-2 col-sm-2 d-flex justify-content-center">
+            <label>
+                <input
+                    class="correct_answer"
+                    name="{{ exam_form.answerTemplate.correct_answer.name }}"
+                    type="checkbox"
+                />
+            </label>
+        </div>
+        <div class="col-9 col-sm-9">
+            <input
+                class="form-control answer"
+                placeholder="Empty Answer"
+                name="{{ exam_form.answerTemplate.answer.name }}"
+            />
+        </div>
+        <div class="col-0 col-sm-0">
+            <a class="btn bg-secondary text-white float-right del"><i class="fas fa-trash-alt"></i></a>
+        </div> {% endcomment %}
+    </div>
+</template>
+{% endblock %}
+
+
+ {% block body_script %}
+<script type="text/javascript" src="{% static 'js/examCreateUpdate.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/enable_tooltip.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/enable_popovers.js' %}"></script>
+{% endblock %}
+

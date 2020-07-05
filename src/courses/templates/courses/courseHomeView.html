@@ -1,0 +1,128 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{ course_instance.name }} | Another E-learning Platform{% endblock %} {% block content %}
+<div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div class="mt-5 col-3 d-none d-md-block" id="sidebar-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-cubes wy-100 mr-1"></i>
+                    Modules
+                </h5>
+            </div>
+
+            <div class="list-group list-group-flush">
+                {% for _, module_instance in course_instance.get_modules_instances %}
+                <a href="{{ module_instance.get_home_url }}" class="list-group-item list-group-item-action"><i class="fas fa-cube wy-100 mr-0 mr-sm-3"></i><span class="btn-link">{{ module_instance.name }}</span></a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="course" class="container mt-5">
+        <div id=" course-tittle" class="jumbotron pt-3 mb-0">
+            <div class="container push-spaces">
+                <h1><strong>Welcome to Course: {{ course_instance.name }}</strong></h1>
+                <p>{{ course_instance.user.getFullName }} <span class="badge badge-success">Principal instructor</span></p>
+            </div>
+        </div>
+        <div id="course-data">
+            <div id="modules" style="display:none;opacity: 0;">
+                <div class="card-header">
+                    <div class="form-inline">
+                    <button 
+                        id="display-module"
+                        class="btn btn-outline-dark p-0 mr-2 mr-sm-3">
+                        <div class="text-right btn chevronicon">
+                            <i class="fas fa-chevron-left wy-100 "></i>
+                        </div>
+                    </button>
+                    <h4 class="my-auto">
+                        <i class="fas fa-cubes wy-100"></i>
+                        Modules
+                    </h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for _, module_instance in course_instance.get_modules_instances %}
+                        <a href="{{ module_instance.get_home_url }}" class="list-group-item list-group-item-action"><i class="fas fa-cube wy-100 mr-3"></i><span class="btn-link">{{ module_instance.name }}</span></a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div id="module">
+                <div class="card-header">
+                    <div class="form-inline justify-content-between">
+                        <h4 class="my-auto">
+                            <i class="fas fa-cube wy-100 mr-0 mr-sm-3"></i>
+                            {{ module_instance.name }}
+                        </h4>
+                        <button id="display-modules" class="btn btn-sm btn-outline-dark d-block d-md-none">
+                            <i class="fas fa-cubes fa-2x wy-100"></i>
+                        </button> 
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div id="accordion">
+                        {% for segment_instance in module_instance.get_segments_instances %}
+                        <div class="card w-100">
+
+                                <button 
+                                    class="btn btn-link bg-light p-0 btn-chevronicon-dp"
+                                    data-toggle="collapse"
+                                    data-target="#collapse-{{ segment_instance.name|slugify }}"
+                                    aria-expanded="true"
+                                    aria-controls="collapse-{{ segment_instance.name|slugify }}">
+                                    <div class="form-inline">
+                                        <div class="card-body text-left pl-2 pl-sm-4 pr-0 pr-sm-4">
+                                            <h6>
+                                                <i class="fas fa-puzzle-piece wy-100 mr-2 mr-sm-3"></i>
+                                                {{ segment_instance.name }}
+                                            </h6>
+                                        </div>
+                                        <div class="text-right btn chevronicon">
+                                            <i class="fas fa-chevron-down wy-100"></i>
+                                        </div>
+                                    </div>
+                                </button>
+                            {% comment %} <div class="card-header">
+                                <h5 class="mb-0">
+                                    {{ segment_instance.name }}
+                                </h5>
+                            </div> {% endcomment %}
+                            <div id="collapse-{{ segment_instance.name|slugify }}" class="collapse" aria-labelledby="heading{{ segment_instance.name|slugify }}" data-parent="#accordion">
+                                <div class="card-body p-0 p-sm-20 my-4">
+                                    {% for content_instance in segment_instance.get_contents_instances %}
+                                    <div class="row ml-3 ml-sm-5 ml-md-4 ml-lg-3 my-auto">
+                                        <div class="col-1 col-sm-1 d-flex flex-row-reverse pr-0 my-auto">
+                                            {% if content_instance.content_type == '1' or content_instance.content_type == '2' %}
+                                            <i class="fas fa-book-open wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '3' %}
+                                            <i class="far fa-play-circle wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '4' %}
+                                            <i class="fas fa-file-invoice wy-100 mr-1"></i>
+                                            {% elif content_instance.content_type == '5' %}
+                                            <i class="fas fa-list-ol wy-100 my-auto mr-1"></i>
+                                            {% else %}
+                                            <i class="fas fa-times wy-100 mr-1"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col col-sm-auto">
+                                            <p class="ml-0 my-auto mr-3">
+                                                <a href="{{ content_instance.get_home_url }}"><strong>{{ content_instance.getType }}: </strong>{{ content_instance.name }}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+{% endblock %}

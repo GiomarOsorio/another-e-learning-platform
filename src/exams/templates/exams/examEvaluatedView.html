@@ -1,0 +1,73 @@
+<!-- templates/signup.html -->
+{% extends 'base.html' %}
+{% load l10n %}
+{% block title %}Last try exam | Another E-learning Platform{% endblock %}
+
+{% block title_script %}
+    {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script> , ['$$','$$'], ['\[','\]']{% endcomment %}
+
+{% comment %} <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ["\\(","\\)"] ],
+      displayMath: [ ],
+      processEscapes: false
+    }
+  });
+</script> {% endcomment %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["\\(","\\)"], ['$$','$$'], ['\[','\]']],
+            displayMath: [],
+            processEscapes: false,
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+{% endblock %}
+
+ {% block content %}
+<div class="row mx-0 my-5">
+    <div class="col-md-10 col-lg-8  mx-auto">
+        <div class="card rounded-lg border-left-info" id="login-form">
+            <div class="card-header">
+            {% if relation.points >= relation.exam.approved %}
+            <div class="alert alert-success mr-3"><div class="d-flex justify-content-start"><span>Congratulations!, you are approved with score: {{ relation.points|unlocalize}} points</span></div>
+            {% else %}
+            <div class="alert alert-danger mr-3"><div class="d-flex justify-content-start"><span>You need almost {{ relation.exam.approved|unlocalize }} points to approved. Your score: {{ relation.points|unlocalize }} points</span></div>
+            {% endif %}
+            <div class="d-flex justify-content-end"><a href="{{ relation.exam.content.get_home_url }}" class="btn btn-info ml-3"><i class="fa fa-chevron-left wy-100 mr-0 pr-1"></i>Go Back</a></div></div>
+            </div>
+            <div class="card-body ">
+                {% for index,questionInstace in relation.exam.get_questions_instances %}
+                    <form id="formquestion" data-id="{{ questionInstace.id }}" class="form" role="form">
+                        <label for="{{ questionInstace.id }}_question">{{ index }} - {{ questionInstace.question }}</label>
+                        {% for question in relation_questions.values %}
+                            {% if question.id == questionInstace.id %}
+                                {% if question.validate %}
+                                <div id="success" class="alert alert-success"><i class="fas fa-check wy-100 mr-1"></i>Correct</div>
+                                {% else %}
+                                <div id="error" class="alert alert-danger"><i class="fas fa-times wy-100 mr-1"></i>Incorrect</div>
+                                {% endif %}
+                            {% else %}
+                            {% endif %}
+                        {% endfor %}
+                {% endfor %}
+                <hr />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

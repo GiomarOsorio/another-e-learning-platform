@@ -1,0 +1,103 @@
+<!-- templates/signup.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Exam:{{ exam_instance.name }} | Another E-learning Platform{% endblock %}
+
+{% block title_script %}
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);"></script>
+{% comment %} <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["\\(","\\)"], ['$$','$$'], ['\[','\]']],
+            displayMath: [],
+            processEscapes: false,
+        },
+        "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> {% endcomment %}
+
+{% endblock %}
+
+ {% block content %}
+<div class="row mx-0">
+    <div class="col-md-10 col-lg-8  mx-auto mt-5">
+        <div class="card rounded-lg border-left-info" id="login-form">
+            <div class="card-body ">
+                <form id="formquiz" data-id="{{ exam_instance.id }}" class="form" role="form">
+                    <h1>{{ exam_instance.name }}</h1>
+                </form>
+                <hr/>
+                {% for index,question_instance in exam_instance.get_questions_instances %}
+                    <form id="formquestion" data-id="{{ question_instance.id }}" class="form card-question" role="form">
+                        <label >{{ index }}-{{ question_instance.question }}</label>
+                        {% if question_instance.correct_answers == 1 %}
+                            {% for answer_instance in question_instance.get_answers_instances %}
+                            <div class="form-check">
+                                <p class='m-0 mx-3 alert'>
+                                    <label>
+                                        <input
+                                            name="answer"
+                                            data-id="{{ answer_instance.id }}"
+                                            type="radio"
+                                            value="{{ answer_instance.get_answer }}"
+                                            class="mr-3 form-check-input"
+                                            autocomplete="off"
+                                        />
+                                        {{ answer_instance.answer }}
+                                    </label>
+                                </p>
+                            </div>                          
+                            {% endfor %}
+                        {% else %}
+                            {% for answer_instance in question_instance.get_altAnswers_instances %}
+                            <div class="form-check">
+                                <p class='m-0 mx-3 alert'>
+                                    <label>
+                                        <input
+                                            name="answer"
+                                            data-id="{{ answer_instance.id }}"
+                                            type="checkbox"
+                                            value="{{ answer_instance.get_answer }}"
+                                            class="mr-3 form-check-input"
+                                            autocomplete="off"
+                                        />
+                                        {{ answer_instance.answer }}
+                                    </label>
+                                </p>
+                            </div>    
+                            {% endfor %}
+                        {% endif %}
+                    </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="button-controls"class="row border-0 mx-0">
+    <div class="col-md-6 mx-auto mt-0 border-0">
+        <!-- form card login -->
+        <div class="card rounded-lg border-0" id="login-form">
+            <div class="card-body border-0">
+                {% csrf_token %}
+                <a id="exam-evaluate" class="btn bg-primary text-white float-right"><i id="wait" class="fa"></i>  Evaluate</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block body_script %}
+<script type="text/javascript" src="{% static 'js/examEvaluate.js' %}"></script>
+{% endblock %}

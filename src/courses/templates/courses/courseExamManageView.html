@@ -1,0 +1,357 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Manage courses & exams | Another E-learning Platform{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="col-md-10 col-12 mx-auto">
+        <h3>Manage courses & exams</h3>
+        <hr />
+        <div class="row d-flex justify-content-center">
+            <div class="mx-3 mx-md-0 col-md-offset-1">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col col-xs-6">
+                                <h3 class="panel-title">{% if user.is_admin or user.is_staff %}All{% else%}My{% endif %} Courses</h3>
+                            </div>
+                            <div class="col col-xs-6 text-right">
+                                <a type="button" class="btn btn-sm btn-primary btn-create" href="{% url "courses:course-create"%}" title="Create new course"><i class="fas fa-plus pr-1"></i>Course</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped table-bordered table-list m-0 p-0">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Course actions"
+                                                {% comment %} data-content="" {% endcomment %}
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-cog my-auto m-0 mr-md-1 d-block d-sm-none"></i></a>
+                                            {% comment %} <i class="fas fa-user my-auto m-0 mr-md-1 d-none d-md-block"></i> {% endcomment %}
+                                            <i class="fas fa-cog my-auto m-0 mr-md-1 d-none d-sm-block"></i>
+                                            <span class="d-none d-sm-block"> Actions</span>
+                                        </div>
+                                    </th>
+                                    {% comment %} <th class="d-none d-md-block">ID</th> {% endcomment %}
+                                    <th>
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Course name"
+                                                {% comment %} data-content="{{ exam.user.get_full_name }}" {% endcomment %}
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-file-signature my-auto m-0 mr-md-1 d-block d-sm-none"></i></a>
+                                            <i class="fas fa-file-signature my-auto m-0 mr-md-1 d-none d-sm-block"></i>
+                                            <span class="d-none d-sm-block my-auto"> Name</span>
+                                        </div>
+                                    </th>
+                                    {% if user.is_admin or user.is_staff %}
+                                    <th>
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Owner course"
+                                                {% comment %} data-content="{{ exam.user.get_full_name }}" {% endcomment %}
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-user my-auto m-0 mr-md-1 d-block d-sm-none"></i></a>
+                                            <i class="fas fa-user my-auto m-0 mr-md-1 d-none d-sm-block"></i>
+                                            <span class="d-none d-sm-block my-auto"> Owner</span>
+                                        </div>
+                                    </th>
+                                    {% endif %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if not CoursesEmpty %}
+                                {% for course in Courses %}
+                                <tr>
+                                    <td align="center">
+                                        <nav class="navbar navbar-expand-md ">
+                                            <button class="navbar-toggler mb-2 mb-sm-1 mb-md-0 course-list" type="button" aria-expanded="true" data-toggle="collapse" data-target="#course_{{ course.id }}" aria-controls="course_{{ course.id }}" aria-expanded="false" aria-label="Toggle navigation">
+                                                <i class="fas fa-chevron-down text-info"></i>
+                                            </button>
+                                            <div id="course_{{ course.id }}" class="collapse navbar-collapse navbar-nav ">
+                                                <a class="btn btn-info" href="{{ course.get_edit_url }}" title='Edit Course'><em class="fa fa-pencil"></em></a>
+                                                <a 
+                                                    class="btn btn-danger my-3 my-sm-2 my-md-1 mx-0 mx-md-2 mx-lg-3"
+                                                    href="#"
+                                                    title='Delete Course'
+                                                    data-toggle="modal" 
+                                                    data-target="#courseDeleteView-{{ course.id }}"
+                                                ><em class="fa fa-trash"></em></a>
+                                                <a class="btn btn-secondary" href="{{ course.get_detail_url }}" title='Detail Course' target="_blank"><em class="fa fa-eye"></em></a>
+                                            </div>
+                                        </nav>
+                                    </td>
+                                    {% comment %} <td class="d-none d-md-block">{{ course.id }}</td> {% endcomment %}
+                                    <td>{{ course.name }}</td>
+                                    {% if user.is_admin or user.is_staff %}
+                                    <td>{{ course.user.get_full_name }}</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}  
+                                {% else %}
+                                <tr>
+                                    <td align="center" colspan="3">
+                                    {% if user.is_admin or user.is_staff %}The platform{% else %}You no have{% endif %} not have course yet, please create a <a type="button" class="btn btn-sm btn-primary btn-create" href="{% url "courses:course-create"%}" title="Create new course"><i class="fas fa-plus pr-1"></i>Course</a>
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="row">
+                            <div class="col col-xs-4">{% if not CoursesEmpty %}Page {{ Courses.number }} of {{ Courses.paginator.num_pages }}{% endif %}</div>
+                            <div class="col col-xs-8">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination float-right m-0">
+                                        <li class="page-item {% if not Courses.has_previous %}disabled{% endif %}">
+                                            <a class="page-link" href="{% if Courses.has_previous %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ Courses.previous_page_number }}{% else %}#{% endif %}" tabindex="-1">Previous</a>
+                                        </li>    
+
+                                        {% for num in Courses.paginator.page_range %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ num }}">
+                                                {% if Courses.number == num %}
+                                                <strong>{{ num }}</strong>
+                                                {% else %}
+                                                {{ num }}
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                        
+                                        <li class="page-item {% if not Courses.has_next %}disabled{% endif %}">
+                                            <a class="page-link" href="{% if Courses.has_next %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}coursepage={{ Courses.next_page_number }}{% else %}#{% endif %}" tabindex="-1">Next</a>
+                                        </li>   
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center my-5">
+            <div class="mx-3 mx-md-0 col-md-offset-1">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col col-xs-6">
+                                <h3 class="panel-title">{% if user.is_admin or user.is_staff %}All{% else%}My{% endif %} Exams</h3>
+                            </div>
+                            <div class="col col-xs-6 text-right">
+                                <a type="button" class="btn btn-sm btn-primary btn-create" href="{% url "exams:exam-create"%}" title="Create new exam"><i class="fas fa-plus pr-1"></i>Exam</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped table-bordered table-list m-0 p-0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Exam actions"
+                                                {% comment %} data-content="{{ exam.user.get_full_name }}" {% endcomment %}
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-cog my-auto m-0 mr-md-1 d-block d-sm-none"></i></a>
+                                            <i class="fas fa-cog my-auto m-0 mr-md-1 d-none d-sm-block"></i>
+                                            <span class="d-none d-sm-block my-auto"> Actions</span>
+                                        </div>
+                                    </th>
+                                    {% comment %} <th class="d-none d-md-block" scope="col">ID</th> {% endcomment %}
+                                    <th class="px-5 px-sm-0" scope="col">
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Exam name"
+                                                {% comment %} data-content="{{ exam.user.get_full_name }}" {% endcomment %}
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-file-signature my-auto m-0 mr-md-1 d-block d-sm-none"></i></a>
+                                            <i class="fas fa-file-signature my-auto m-0 mr-md-1 d-none d-sm-block"></i>
+                                            <span class="d-none d-sm-block my-auto"> Name</span>
+                                        </div>
+                                    </th>
+                                    {% if user.is_admin or user.is_staff %}
+                                    <th class="border border-top-0" scope="col">
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Exam owner"
+                                                {% comment %} data-content="{{ exam.user.get_full_name }}" {% endcomment %}
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-user my-auto m-0 mr-md-1"></i></a>
+                                            <i class="fas fa-user my-auto m-0 mr-md-1 d-none d-md-block"></i>
+                                            <span class="d-none d-md-block my-auto"> Owner</span>
+                                        </div>
+                                    </th>
+                                    {% endif %}
+                                    <th class="px-5 px-sm-0 text-center" scope="col">
+                                        <div class="form-inline justify-content-center">
+                                            <a 
+                                                data-toggle="popover"
+                                                title="Course name"
+                                                data-content="name of the course where this exam is added"
+                                                data-placement="top"
+                                                class="d-block d-md-none"
+                                            ><i class="fas fa-link my-auto m-0 mr-md-1 d-block d-sm-none"></i></a>
+                                            <i class="fas fa-link my-auto m-0 mr-md-1 d-none d-sm-block"></i>
+                                            <span class="d-none d-sm-block my-auto"> Course Name</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if not ExamsEmpty %}
+                                {% for exam in Exams %}
+                                <tr>
+                                    <td scope="row" align="center">
+                                        <nav class="navbar navbar-expand-md ">
+                                            <button class="navbar-toggler mb-2 mb-sm-1 mb-md-0 exam-list" type="button" aria-expanded="true" data-toggle="collapse" data-target="#exam_{{ exam.id }}" aria-controls="exam_{{ exam.id }}" aria-expanded="false" aria-label="Toggle navigation">
+                                                <i class="fas fa-chevron-down text-info"></i>
+                                            </button>
+                                            <div id="exam_{{ exam.id }}" class="collapse navbar-collapse navbar-nav ">
+                                                <a class="btn btn-info" href="{{ exam.get_edit_url }}" title='Exam edit'><em class="fa fa-pencil"></em></a>
+                                                <a 
+                                                    class="btn btn-danger my-3 my-sm-2 my-md-1 mx-0 mx-md-2 mx-lg-3"
+                                                    href="#"
+                                                    title='Exam delete'
+                                                    data-toggle="modal" 
+                                                    data-target="#examDeleteView-{{ exam.id }}"
+                                                ><em class="fa fa-trash"></em></a>
+                                                <a class="btn btn-secondary" href="{{ exam.get_detail_url }}" title='Exam detail' target="_blank"><em class="fa fa-eye"></em></a>
+                                            </div>
+                                        </nav>
+                                    </td>
+                                    {% comment %} <td class="d-none d-md-block">{{ exam.id }}</td> {% endcomment %}
+                                    <td>{{ exam.name }}</td>
+                                    {% if user.is_admin or user.is_staff %}
+                                    <td class="border-bottom-0 text-center">
+                                            <a 
+                                                {% comment %} href="#{{ course_form.name.id_for_label }}_course " {% endcomment %}
+                                                data-toggle="popover"
+                                                title="Owner course"
+                                                data-content="{{ exam.user.get_full_name }}"
+                                                data-placement="top"
+                                                class="w-100"
+                                            ><i class="fas fa-user d-block d-md-none my-auto m-0 mr-md-1"></i></a>
+                                            {% comment %} <i class="fas fa-user d-block d-md-none my-auto m-0 mr-md-1"></i> {% endcomment %}
+                                            <span class="d-none d-md-block my-auto">{{ exam.user.get_full_name }}</span>
+                                    </td>
+                                    {% endif %}
+                                    <td>{% if exam.content.belongs_to_the_course.name %}{{ exam.content.belongs_to_the_course.name }}{% else %}<strong>-NO COURSE ASSIGNED-<strong>{% endif %}</td>
+                                </tr>
+                                {% endfor %}  
+                                {% else %}
+                                <tr>
+                                    <td align="center" colspan="5">
+                                    {% if user.is_admin or user.is_staff %}The platform{% else %}You no have{% endif %} not have exam yet, please create a <a type="button" class="btn btn-sm btn-primary btn-create" href="{% url "exams:exam-create"%}" title="Create new exam"><i class="fas fa-plus pr-1"></i>Exam</a>
+                                    </td>
+                                </tr>
+                                {% endif %} 
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <div class="row">
+                            <div class="col col-xs-4">{% if not ExamsEmpty %}Page {{ Exams.number }} of {{ Exams.paginator.num_pages }}{% endif %}</div>
+                            <div class="col col-xs-8">
+                                <nav aria-label="Page navigation">
+                                    
+                                    <ul class="pagination float-right m-0">
+                                        <li class="page-item {% if not Exams.has_previous %}disabled{% endif %}">
+                                            <a class="page-link" href="{% if Exams.has_previous %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}exampage={{ Exams.previous_page_number }}{% else %}#{% endif %}" tabindex="-1">Previous</a>
+                                        </li>    
+
+                                        {% for num in Exams.paginator.page_range %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}exampage={{ num }}">
+                                                {% if Exams.number == num %}
+                                                <strong>{{ num }}</strong>
+                                                {% else %}
+                                                {{ num }}
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                        <li class="page-item {% if not Exams.has_next %}disabled{% endif %}">
+                                            <a class="page-link" href="{% if Exams.has_next %}{% if get_params %}?{{ get_params }}&{% else %}?{% endif %}exampage={{ Exams.next_page_number }}{% else %}#{% endif %}" tabindex="-1">Next</a>
+                                        </li>   
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% if not CoursesEmpty %}
+{% for course in Courses %}
+<div class="modal fade" id="courseDeleteView-{{ course.id }}" tabindex="-1" role="dialog" aria-labelledby="courseDeleteView-{{ course.id }}" aria-hidden="true">
+    <form method='POST' action="{{ course.get_delete_url }}"> {% csrf_token %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <br>
+            <div class="modal-body">
+                    <h1>Do you want to delete this course?</h1>
+                    <h6>{{ course.name }}</h6>
+            </div>
+            <div class="modal-footer">
+                <center>
+                    <button type='submit' class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                </center>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+{% endfor %}
+{% endif %}
+
+{% if not ExamsEmpty %}
+{% for exam in Exams %}
+<div class="modal fade" id="examDeleteView-{{ exam.id }}" tabindex="-1" role="dialog" aria-labelledby="examDeleteView-{{ exam.id }}" aria-hidden="true">
+    <form method='POST' action="{{ exam.get_delete_url }}"> {% csrf_token %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <br>
+            <div class="modal-body">
+                    <h1>Do you want to delete this exam?</h1>
+                    <h6>{{ exam.name }}</h6>
+            </div>
+            <div class="modal-footer">
+                <center>
+                    <button type='submit' class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+                </center>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}
+
+{% block body_script %}
+<script type="text/javascript" src="{% static 'js/enable_tooltip.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/enable_popovers.js' %}"></script>
+{% endblock %}
